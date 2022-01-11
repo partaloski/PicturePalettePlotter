@@ -1,1 +1,1 @@
-python -W ignore main.py
+python -W ignore main.py C:\Users\parta\Desktop\RDG\dadadad2.jpg No 25

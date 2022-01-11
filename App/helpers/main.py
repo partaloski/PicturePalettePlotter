@@ -124,7 +124,7 @@ def main(path, mode, value_count):
     ax.xaxis.set_ticks_position('none')
     ax.yaxis.set_ticks_position('none')
 
-    plt.xlabel("Color Count")
+    plt.xlabel("Color Count (in thousands)")
     plt.ylabel("Colors")
     # Add padding between axes and labels
     ax.xaxis.set_tick_params(pad=5)
@@ -137,7 +137,8 @@ def main(path, mode, value_count):
 
     # Show top values
     ax.invert_yaxis()
-
+    if os.path.isfile('image.png'):
+        os.remove('image.png')
     plt.savefig('image.png')
 
 if __name__ == '__main__':
