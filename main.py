@@ -1,7 +1,10 @@
+distance = 22
+
+
 import operator
 import os.path
 import time
-
+import math
 import pandas as pd
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -33,9 +36,13 @@ class Pixel:
     def get_appearances(self):
         return self.appearances
 
+    def get_distance(self, pixel):
+        return math.sqrt(math.pow((self.r-pixel.r), 2) + math.pow((self.g-pixel.g), 2) + math.pow((self.b-pixel.b), 2))
+
+
 def main():
-    path = input("Input the path of the picture here, please: ")
-    mode = input("If you want the barplot to show hexadecimal colours, enter anything, else, just press Enter : ")
+    path = input("Input the path of the picture here, please")
+    mode = input("If you want the barplot to show hexadecimal colours, enter 1, else, just press Enter.")
     if os.path.isfile(path) == False:
         print("The path you entered isn't a valid file.\nThe program will quit in 5.")
         time.sleep(5)
@@ -55,26 +62,45 @@ def main():
 
     sorted_by_occurences = sorted(pixels_list, key=operator.attrgetter("appearances"))
     sorted_by_occurences.reverse()
-    pixels_all = [[x.get_value(), x.get_appearances(), x.get_value_alt()] for x in sorted_by_occurences]
+    pixels_all = []
+    value_count = int(input('How many of the top colors do you want to be shown?'))
+    for pixel in sorted_by_occurences:
+        if len(pixels_all) == value_count:
+            break
+        do_i_add = True
+        for p in pixels_all:
+            dist = p.get_distance(pixel)
+            if dist < float(distance):
+                p.appearances = p.appearances + pixel.appearances
+                do_i_add = False
+                break
+        if do_i_add:
+            pixels_all.append(pixel)
+
+
+    sorted_by_occurences = sorted(pixels_all, key=operator.attrgetter("appearances"))
+    sorted_by_occurences.reverse()
+
+    pixels_all = [[x.get_value(), x.get_appearances()/1000, x.get_value_alt()] for x in sorted_by_occurences]
 
     dataFrame = pd.DataFrame(pixels_all)
     dataFrame.columns = ["Color", "Count", "RGB"]
     dataFrame.to_csv('data.csv')
 
-    value_count = int(input('How many of the top colors do you want to be shown?'))
     if value_count <= 0:
         print("Value cannot be smaller than 0.\nProgram shutting down in 5 seconds")
         time.sleep(5)
         return
 
     df = dataFrame
-
+    if value_count > len(pixels_all):
+        value_count = len(pixels_all)
     col = df['Color'].head(value_count)
     cou = df['Count'].head(value_count)
     rgb = df['RGB'].head(value_count)
 
     # Figure Size
-    fig, ax = plt.subplots(figsize=(value_count, 20))
+    fig, ax = plt.subplots(figsize=(len(col)+6, 20))
 
 
     if len(mode.strip()) == 0:
@@ -108,8 +134,7 @@ def main():
 
     plt.savefig('image.png')
 
-    print('The program is now complete, exiting in 5 seconds')
-
 if __name__ == '__main__':
     main()
+    print('Program is finished, check in the folder for the files data.csv and image.jpg\n\nShutting down in 5 seconds.')
     time.sleep(5)
