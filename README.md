@@ -13,7 +13,7 @@ to then be added to the list of colours, else, we count the appearances for the 
 <br>
 The reason I chose the unit 22 is nothing but the test cases I did, the value 22 seemed the most appropriate and gave<br>
 me the best results in return, you can change it by going into the file (main.py) and just changing the first file
-<br>
+<br><br><br>
 The latest app focuses on introducing an actual UI, that makes this program usable by anyone, the instructions are clear<br>
 And you should be able to run it on every version of Windows that has Python installed.
 <hr>
