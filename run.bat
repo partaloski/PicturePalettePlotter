@@ -1,1 +1,1 @@
-python -W ignore main.py C:\Users\parta\Desktop\RDG\dadadad2.jpg No 25
+python -W ignore main.py PATH Yes/No(YES->RGB VALUES/NO->HEX VALUES) COUNT_VALUES
