@@ -30,7 +30,7 @@ class Pixel:
         return str(self.rgbhex)
 
     def get_value_alt(self):
-        return str(self.r)+","+str(self.g)+","+str(self.b)
+        return str(self.r)+" "+str(self.g)+" "+str(self.b)
 
     def increment(self):
         self.appearances += 1
